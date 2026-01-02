@@ -55,11 +55,12 @@ const Chatbot: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat", { 
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await fetch("/api/chat", { 
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  
         body: JSON.stringify({
           messages: [...messages, userMessage].map((m) => ({
             role: m.role,
