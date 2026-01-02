@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# Esakkiammal G | Portfolio
 
-## Project info
+A professional, full-stack portfolio featuring a high-end dark-themed UI, a functional contact form powered by Nodemailer, and a custom AI-powered chatbot.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Project Overview
 
-## How can I edit this code?
+This portfolio is designed to showcase modern web development capabilities, focusing on "clarity, curiosity, and quiet excellence." It features a split-layout contact section and a glassmorphic design language.
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+- **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend**: Node.js, Express.js
+- **Integrations**: 
+  - **Nodemailer**: For secure email delivery via Gmail SMTP.
+  - **Google Gemini API**: Powering the interactive AI chatbot.
+- **Animations**: ScrollReveal, Framer Motion, Lucide React icons
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 📂 Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+```text
+├── backend/              # Node.js/Express server
+│   ├── routes/           # API endpoints (Chat & Contact)
+│   └── server.ts         # Main entry point
+├── src/                  # React Frontend
+│   ├── components/       # UI & Section components
+│   └── pages/            # Page layouts
+├── public/               # Static assets (Favicons, etc.)
+└── package.json          # Project dependencies
 
-**Use your preferred IDE**
+⚙️ Local Development Setup
+1. Prerequisites
+Node.js: Version 18 or higher.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Gmail App Password: Required for Nodemailer. Generate here.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Gemini API Key: Required for the chatbot. Get it here.
 
-Follow these steps:
+2. Installation
+Clone the repository and install dependencies for both frontend and backend:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Bash
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Clone the repo
+git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git]
+cd YOUR_REPO_NAME
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install Root/Frontend dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Install Backend dependencies
+cd backend
+npm install
+cd ..
+3. Environment Variables
+Create a .env file inside the backend/ folder:
+
+Code snippet
+
+PORT=5000
+GEMINI_API_KEY=your_gemini_api_key_here
+EMAIL_USER=esakkiammalg1011@gmail.com
+EMAIL_PASS=your_16_digit_gmail_app_password
+4. Running the App
+Open two terminals:
+
+Terminal 1 (Backend):
+
+Bash
+
+cd backend
 npm run dev
-```
+Terminal 2 (Frontend):
 
-**Edit a file directly in GitHub**
+Bash
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+npm run dev
+🌐 Deployment Guide
+Backend (Render)
+Create a New Web Service on Render.
 
-**Use GitHub Codespaces**
+Set Root Directory to backend.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Set Start Command to node server.ts (or npm start).
 
-## What technologies are used for this project?
+Add your .env variables in the Render "Environment" settings.
 
-This project is built with:
+Frontend (Vercel)
+Import the repository into Vercel.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Add the Environment Variable: VITE_API_URL = https://your-backend-url.onrender.com.
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Deploy.
