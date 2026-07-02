@@ -10,6 +10,7 @@ import Achievements from '@/components/sections/Achievements';
 import Philosophy from '@/components/sections/Philosophy';
 import Contact from '@/components/sections/Contact';
 import Chatbot from '@/components/Chatbot';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,11 +49,14 @@ const Index: React.FC = () => {
 
   return (
     <main className="relative overflow-hidden">
-      {/* SEO Meta */}
-      <title>Esakkiammal G — Full-Stack Developer & AI Enthusiast</title>
+      {/* Premium Global Tracking Cursor */}
+      <CustomCursor />
+
+      {/* SEO Meta — Updated to Software Engineer */}
+      <title>Esakkiammal G — Software Engineer & AI Enthusiast</title>
       <meta 
         name="description" 
-        content="Design-aware full-stack engineer with an AI-first mindset. Building calm, scalable web experiences with React, Node.js, and AI integrations." 
+        content="Design-aware software engineer with an AI-first mindset. Building calm, scalable web experiences with React, Node.js, and AI integrations." 
       />
       
       <Navigation />

@@ -1,128 +1,172 @@
-import React, { useState } from 'react';
-import ScrollReveal from '@/components/ui/ScrollReveal';
-import { Mail, Github, Linkedin, ArrowUpRight, Send, Loader2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Mail, Github, Linkedin, Send, Loader2, Code2, Award } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const socialLinks = [
+  {
+    label: 'GitHub',
+    sublabel: 'Source & repos',
+    icon: Github,
+    href: 'https://github.com/es232',
+  },
+  {
+    label: 'LinkedIn',
+    sublabel: "Let's connect",
+    icon: Linkedin,
+    href: 'https://linkedin.com/in/esakkiammal-g-134b23290',
+  },
+  {
+    label: 'LeetCode',
+    sublabel: 'Problem solving',
+    icon: Code2,
+    href: 'https://leetcode.com/u/YZ8XSi0GdG/',
+  },
+  {
+    label: 'SkillRack',
+    sublabel: 'Verified resume',
+    icon: Award,
+    href: 'https://www.skillrack.com/faces/resume.xhtml?id=525888&key=3bad68e7f2e9eb936a4380448ebee84fe9b52a36',
+  },
+];
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const elements = gsap.utils.toArray('.contact-anim') as HTMLElement[];
+    elements.forEach((el, i) => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: i * 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          },
+        }
+      );
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setStatus('loading');
-  
-  const formData = new FormData(e.currentTarget);
-  const data = Object.fromEntries(formData);
+    e.preventDefault();
+    setStatus('loading');
 
-  try {
-    // Inside handleSubmit in Contact.tsx
-const response = await fetch('/api/contact', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(data),
-});
-    if (response.ok) {
-      setStatus('success');
-      (e.target as HTMLFormElement).reset(); // Clear form on success
-    } else {
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        setStatus('success');
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
       setStatus('error');
     }
-  } catch (error) {
-    setStatus('error');
-  }
-};
+  };
+
   return (
-    <section id="contact" className="relative py-32 bg-foreground overflow-hidden">
-      {/* Background gradient */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 50% at 50% 50%, hsl(var(--cherry) / 0.15) 0%, transparent 60%),
-            linear-gradient(180deg, hsl(var(--foreground)) 0%, hsl(var(--gray-900)) 100%)
-          `,
-        }}
-      />
+    <section ref={sectionRef} id="contact" className="relative py-32 bg-card border-t border-border/50">
+      <div className="container mx-auto px-6 lg:px-12 relative z-10 max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
-          
-          {/* Left Side: Text & Socials */}
-          <div className="space-y-8">
-            <ScrollReveal animation="slide-up">
-              <h2 className="text-display-sm md:text-display-md font-display font-bold text-background mb-6">
-                Let's Build <span className="text-cherry">Something</span>
+          <div className="space-y-12">
+            <div className="contact-anim">
+              <span className="text-accent uppercase tracking-widest text-sm mb-4 block">Connect</span>
+              <h2 className="text-display-md font-display text-foreground mb-6">
+                Let's Build <span className="italic font-light">Something</span>
               </h2>
-              <p className="text-body-lg text-gray-400 max-w-md">
-                If you're building products that value clarity and quiet excellence — I'd love to connect.
+              <p className="text-body-lg text-muted-foreground leading-relaxed">
+                If you're building products that value clarity and quiet excellence — I'd love to connect. Whether it's AI systems or scalable architectures, let's talk.
               </p>
-            </ScrollReveal>
+            </div>
 
-            <ScrollReveal animation="fade" delay={0.2} className="space-y-6">
-              <div className="flex flex-col gap-4">
-                <a
-                  href="mailto:esakkiammalg1011@gmail.com"
-                  className="flex items-center gap-4 text-gray-400 hover:text-cherry transition-colors group w-fit"
-                >
-                  <div className="w-12 h-12 rounded-full bg-gray-800/50 flex items-center justify-center group-hover:bg-cherry/20 transition-all">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <span className="font-medium">esakkiammalg1011@gmail.com</span>
-                </a>
-              </div>
-
-              <div className="pt-8 border-t border-gray-800">
-                <p className="text-body-sm text-gray-500 mb-6 uppercase tracking-widest">Digital Spaces</p>
-                <div className="flex gap-4">
-                  {[
-                    { icon: Github, href: "https://github.com/es232" },
-                    { icon: Linkedin, href: "https://linkedin.com/in/esakkiammal-g-134b23290" }
-                  ].map((social, i) => (
-                    <a
-                      key={i}
-                      href={social.href}
-                      target="_blank"
-                      className="w-12 h-12 bg-gray-800/50 hover:bg-cherry rounded-full flex items-center justify-center text-background transition-all hover:-translate-y-1"
-                    >
-                      <social.icon className="w-5 h-5" />
-                    </a>
-                  ))}
+            <div className="contact-anim space-y-6">
+              <a
+                href="mailto:esakkiammalg1011@gmail.com"
+                className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors group w-fit interactive"
+              >
+                <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                  <Mail className="w-6 h-6" />
                 </div>
+                <span className="text-body-lg font-medium">esakkiammalg1011@gmail.com</span>
+              </a>
+            </div>
+
+            <div className="contact-anim pt-8 border-t border-border/50">
+              <p className="text-sm text-muted-foreground mb-6 uppercase tracking-widest">Digital Presence</p>
+              <div className="grid grid-cols-2 gap-3">
+                {socialLinks.map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-3 bg-secondary/60 hover:bg-primary rounded-2xl px-4 py-3 text-foreground hover:text-primary-foreground transition-all hover:-translate-y-1 interactive group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-background/60 group-hover:bg-primary-foreground/15 flex items-center justify-center shrink-0 transition-colors">
+                      <social.icon className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold leading-tight truncate">{social.label}</p>
+                      <p className="text-xs text-muted-foreground group-hover:text-primary-foreground/80 leading-tight truncate transition-colors">
+                        {social.sublabel}
+                      </p>
+                    </div>
+                  </a>
+                ))}
               </div>
-            </ScrollReveal>
+            </div>
           </div>
 
-          {/* Right Side: The Form */}
-          <ScrollReveal animation="slide-up" delay={0.3}>
-            <form 
+          <div className="contact-anim">
+            <form
               onSubmit={handleSubmit}
-              className="bg-gray-900/40 backdrop-blur-xl border border-gray-800 p-8 rounded-2xl space-y-6"
+              className="bg-background border border-border/50 p-8 md:p-10 rounded-3xl space-y-6 shadow-soft"
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Name</label>
-                  <input 
-                    required name="name" type="text" 
-                    className="w-full bg-gray-800/30 border border-gray-700 rounded-lg px-4 py-3 text-background focus:outline-none focus:border-cherry transition-colors placeholder:text-gray-600"
+                  <label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Name</label>
+                  <input
+                    required name="name" type="text"
+                    className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted-foreground/50 interactive"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Email</label>
-                  <input 
-                    required name="email" type="email" 
-                    className="w-full bg-gray-800/30 border border-gray-700 rounded-lg px-4 py-3 text-background focus:outline-none focus:border-cherry transition-colors placeholder:text-gray-600"
+                  <label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Email</label>
+                  <input
+                    required name="email" type="email"
+                    className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted-foreground/50 interactive"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Message</label>
-                <textarea 
-                  required name="message" rows={4} placeholder="What's on your mind?"
-                  className="w-full bg-gray-800/30 border border-gray-700 rounded-lg px-4 py-3 text-background focus:outline-none focus:border-cherry transition-colors placeholder:text-gray-600 resize-none"
+                <label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Message</label>
+                <textarea
+                  required name="message" rows={5} placeholder="What's on your mind?"
+                  className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors placeholder:text-muted-foreground/50 resize-none interactive"
                 />
               </div>
 
               <button
                 disabled={status === 'loading'}
-                className="w-full py-4 bg-cherry hover:bg-cherry/90 disabled:bg-gray-700 text-background font-bold rounded-lg transition-all flex items-center justify-center gap-2 group"
+                className="w-full py-4 bg-primary hover:bg-primary/90 disabled:bg-muted text-primary-foreground font-medium rounded-xl transition-all flex items-center justify-center gap-2 group interactive"
               >
                 {status === 'loading' ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -135,20 +179,18 @@ const response = await fetch('/api/contact', {
                   </>
                 )}
               </button>
-              
+
               {status === 'success' && (
-                <p className="text-center text-sm text-green-400 animate-fade-in">Thanks! I'll get back to you soon.</p>
+                <p className="text-center text-sm text-green-600 font-medium">Thanks! I'll get back to you soon.</p>
               )}
             </form>
-          </ScrollReveal>
-
+          </div>
         </div>
       </div>
 
-      {/* Footer stays at the bottom */}
-      <div className="mt-32 py-8 border-t border-gray-800">
-        <p className="text-center text-body-sm text-gray-600">
-          Designed & built with care by Esakkiammal G • {new Date().getFullYear()}
+      <div className="mt-32 pt-8 border-t border-border/50">
+        <p className="text-center text-body-sm text-muted-foreground font-light">
+          Designed & built with intention by Esakkiammal G • {new Date().getFullYear()}
         </p>
       </div>
     </section>

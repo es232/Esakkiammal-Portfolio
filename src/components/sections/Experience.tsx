@@ -1,52 +1,55 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ScrollReveal from '@/components/ui/ScrollReveal';
-import { Briefcase, Sparkles } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
   {
-    title: 'Full Stack Developer Intern',
-    company: 'Zidio',
-    description: `At Zidio, I worked on a real product with real users — where clarity and reliability mattered. I helped build an AI-driven full-stack React application using Firebase, including a personalized learning chatbot, secure authentication, role-based access, and session scheduling.`,
-    insight: 'I learned to think in systems — not just screens.',
-    skills: ['React', 'Firebase', 'AI Chatbot', 'Authentication', 'API Design'],
+    role: 'RPA Intern',
+    company: 'Zimph Solutions (Zoho Partner)',
+    period: 'Mar 2026 – May 2026',
+    description: 'Engineered and deployed an end-to-end RPA automation system using Zoho RPA to streamline the IndiaMART lead acquisition lifecycle. Architected a high-frequency automation pipeline processing inbound leads every 30 seconds, integrating seamlessly with Zoho CRM.',
+    impact: 'Scaled weekly lead acquisition to 50+ qualified leads, contributing to an estimated 40% increase in revenue.'
   },
   {
-    title: 'Web Development Intern',
+    role: 'Full Stack Developer Intern',
+    company: 'Zidio',
+    period: 'May 2025 – Jul 2025',
+    description: 'Developed a responsive Excel Analytics Dashboard using the MERN stack and REST APIs. Implemented secure JWT-based authentication and role-based access control.',
+    impact: 'Optimized API workflows and frontend rendering performance, reducing processing latency by 30%.'
+  },
+  {
+    role: 'Web Development Intern',
     company: 'InternPe',
-    description: `At InternPe, speed and polish were key. I built 4+ responsive web applications using HTML, CSS, and JavaScript, focusing on mobile-first layouts, modern UI patterns, and interaction details like subtle animations and glassmorphism.`,
-    insight: 'I began designing interfaces that feel good to use — not just good to look at.',
-    skills: ['HTML', 'CSS', 'JavaScript', 'Responsive Design', 'UI/UX'],
+    period: 'Jan 2025 – Mar 2025',
+    description: 'Developed responsive web applications focusing on modern UI/UX interfaces with animations, glassmorphism, and interactive components. Ensured mobile-first cross-browser compatibility.',
+    impact: 'Delivered 4+ robust web experiences utilized for active user engagement.'
   },
 ];
 
 const Experience: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!timelineRef.current) return;
-
-    const line = timelineRef.current.querySelector('.timeline-line');
+    const items = gsap.utils.toArray('.exp-item') as HTMLElement[];
     
-    gsap.fromTo(
-      line,
-      { scaleY: 0 },
-      {
-        scaleY: 1,
-        duration: 1.5,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: timelineRef.current,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          scrub: 1,
-        },
-      }
-    );
+    items.forEach((item, i) => {
+      gsap.fromTo(
+        item,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 85%',
+          },
+        }
+      );
+    });
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -54,90 +57,36 @@ const Experience: React.FC = () => {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="experience"
-      className="relative py-32 bg-gray-50"
-    >
-      {/* Background accent */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-      <div className="container mx-auto px-6 lg:px-12">
-        {/* Section header */}
-        <ScrollReveal animation="slide-up" className="text-center mb-20">
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-cherry/10 text-cherry text-caption font-medium rounded-full mb-6">
-            <Briefcase className="w-4 h-4" />
+    <section ref={sectionRef} id="experience" className="relative py-32 bg-card border-t border-border/50">
+      <div className="container mx-auto px-6 lg:px-12 max-w-4xl relative z-10">
+        <div className="mb-24">
+          <span className="text-accent uppercase tracking-widest text-sm mb-4 block">Professional Background</span>
+          <h2 className="text-display-md font-display text-foreground">
             Experience
-          </span>
-          <h2 className="text-display-sm md:text-display-md font-display font-bold text-foreground mb-4">
-            My Journey So Far
           </h2>
-          <p className="text-body-lg text-muted-foreground max-w-xl mx-auto">
-            Experience, told simply — from building real products to crafting polished interfaces.
-          </p>
-        </ScrollReveal>
+        </div>
 
-        {/* Timeline */}
-        <div ref={timelineRef} className="relative max-w-3xl mx-auto">
-          {/* Timeline line */}
-          <div className="absolute left-0 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px">
-            <div className="timeline-line absolute inset-0 bg-gradient-to-b from-cherry via-cherry to-cherry/20 origin-top" />
-          </div>
-
-          {/* Experience cards */}
+        <div className="space-y-24">
           {experiences.map((exp, index) => (
-            <ScrollReveal
-              key={index}
-              animation={index % 2 === 0 ? 'slide-right' : 'slide-left'}
-              delay={index * 0.1}
-              className={`relative mb-16 md:mb-24 ${
-                index % 2 === 0 
-                  ? 'md:pr-1/2 md:text-right md:ml-0 md:mr-auto' 
-                  : 'md:pl-1/2 md:text-left md:ml-auto md:mr-0'
-              } pl-8 md:pl-0 md:w-1/2`}
-            >
-              {/* Timeline dot */}
-              <div className={`absolute left-0 md:left-auto ${
-                index % 2 === 0 ? 'md:right-0 md:translate-x-1/2' : 'md:left-0 md:-translate-x-1/2'
-              } top-0 w-4 h-4 bg-cherry rounded-full border-4 border-background shadow-cherry z-10`} />
-
-              {/* Card */}
-              <div className={`bg-card rounded-2xl p-8 shadow-soft card-lift ${
-                index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'
-              }`}>
-                <div className={`flex flex-col ${index % 2 === 0 ? 'md:items-end' : 'md:items-start'}`}>
-                  <span className="text-caption text-cherry font-semibold uppercase tracking-wider mb-2">
-                    {exp.company}
-                  </span>
-                  <h3 className="text-heading-md font-display font-bold text-foreground mb-4">
-                    {exp.title}
-                  </h3>
-                  <p className={`text-body-md text-muted-foreground mb-6 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                    {exp.description}
+            <div key={index} className="exp-item group flex flex-col md:flex-row gap-8 md:gap-16">
+              <div className="md:w-1/3 flex-shrink-0">
+                <p className="text-muted-foreground font-mono text-sm tracking-wider mb-2">{exp.period}</p>
+                <h3 className="text-heading-sm font-display font-medium text-foreground">{exp.role}</h3>
+                <p className="text-primary text-sm font-medium mt-1">{exp.company}</p>
+              </div>
+              
+              <div className="md:w-2/3">
+                <p className="text-body-lg text-muted-foreground leading-relaxed mb-6">
+                  {exp.description}
+                </p>
+                <div className="pl-6 border-l-2 border-accent/50 bg-accent/5 p-4 rounded-r-lg">
+                  <p className="text-body-sm font-medium text-foreground">
+                    <span className="text-accent uppercase tracking-wider text-xs block mb-1">Impact</span>
+                    {exp.impact}
                   </p>
-
-                  {/* Insight */}
-                  <div className={`flex items-start gap-3 p-4 bg-cherry/5 rounded-xl mb-6 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                    <Sparkles className="w-5 h-5 text-cherry flex-shrink-0 mt-0.5" />
-                    <p className={`text-body-sm text-foreground font-medium italic ${index % 2 === 0 ? 'md:text-right' : ''}`}>
-                      "{exp.insight}"
-                    </p>
-                  </div>
-
-                  {/* Skills */}
-                  <div className={`flex flex-wrap gap-2 ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
-                    {exp.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        className="px-3 py-1 bg-gray-100 text-gray-600 text-caption font-medium rounded-full"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           ))}
         </div>
       </div>

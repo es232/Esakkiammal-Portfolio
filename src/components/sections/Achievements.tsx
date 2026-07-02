@@ -1,188 +1,219 @@
-import React from 'react';
-import ScrollReveal from '@/components/ui/ScrollReveal';
-import { Award, Trophy, Medal, ExternalLink } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Award, Trophy, Medal, Star, FileText, Users, ArrowUpRight } from 'lucide-react';
 
-const achievements = [
-  {
-    icon: Trophy,
-    title: 'Top 1% — NPTEL Certification',
-    description: 'Privacy and Security in Online Social Media',
-    type: 'certification',
-  },
-  {
-    icon: Award,
-    title: 'Winner — Poster Competition',
-    description: '"Sextortion and Women Safety in Digital Media"',
-    type: 'competition',
-  },
-  {
-    icon: Medal,
-    title: 'Special Jury Award — AURA\'25 Hackathon',
-    description: 'Recognized for innovation and technical excellence',
-    type: 'hackathon',
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
+
+const FlipCard = ({ title, issuer, date, imagePath, icon: Icon = Award }: { title: string, issuer: string, date: string, imagePath: string, icon?: any }) => {
+  return (
+    <div className="group w-full h-[250px] [perspective:1000px] interactive">
+      <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+        
+        {/* Front */}
+        <div className="absolute inset-0 bg-card border border-border/50 rounded-3xl p-6 flex flex-col items-center text-center justify-center [backface-visibility:hidden] shadow-soft">
+          <Icon className="w-10 h-10 text-accent mb-4" />
+          <h4 className="text-heading-sm font-display font-medium text-foreground mb-2 leading-tight">{title}</h4>
+          <p className="text-body-sm text-primary font-medium">{issuer}</p>
+          {date && <p className="text-xs font-mono text-muted-foreground mt-2">{date}</p>}
+        </div>
+
+        {/* Back */}
+        <div className="absolute inset-0 bg-secondary rounded-3xl [transform:rotateY(180deg)] [backface-visibility:hidden] overflow-hidden border border-border shadow-soft flex items-center justify-center p-2">
+          <img 
+            src={imagePath} 
+            alt={title} 
+            className="w-full h-full object-contain rounded-2xl opacity-90 group-hover:opacity-100 transition-opacity" 
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/2B2B2B/FFFDF8?text=Certificate+Image\\nUpload+to+'+imagePath;
+            }}
+          />
+        </div>
+
+      </div>
+    </div>
+  );
+};
 
 const Achievements: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const cards = gsap.utils.toArray('.ach-anim') as HTMLElement[];
+    
+    cards.forEach((card, index) => {
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+          },
+          delay: index * 0.1,
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <section id="achievements" className="relative py-32 bg-background overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="absolute top-20 left-20 w-64 h-64 bg-cherry/5 rounded-full blur-3xl" />
-
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        {/* Section header */}
-        <ScrollReveal animation="slide-up" className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-cherry/10 text-cherry text-caption font-medium rounded-full mb-6">
-            <Award className="w-4 h-4" />
-            Recognition
-          </span>
-          <h2 className="text-display-sm md:text-display-md font-display font-bold text-foreground mb-4">
-            Achievements & Recognition
+    <section id="achievements" ref={sectionRef} className="relative py-32 bg-background overflow-hidden border-t border-border/50">
+      <div className="container mx-auto px-6 lg:px-12 relative z-10 max-w-7xl">
+        <div className="text-center mb-24 ach-anim">
+          <span className="text-accent uppercase tracking-widest text-sm mb-4 block">Legacy</span>
+          <h2 className="text-display-md font-display text-foreground">
+            Honors & Leadership
           </h2>
-          <p className="text-body-lg text-muted-foreground max-w-xl mx-auto">
-            Milestones that mark the journey — always learning, always growing.
-          </p>
-        </ScrollReveal>
+        </div>
 
-        {/* Achievements grid */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
-          {achievements.map((achievement, index) => {
-            const Icon = achievement.icon;
-            return (
-              <ScrollReveal
-                key={index}
-                animation="scale"
-                delay={index * 0.1}
-              >
-                <div className="group bg-card rounded-2xl p-8 text-center border border-border/50 card-lift hover:border-cherry/30 transition-colors">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-cherry/10 rounded-2xl mb-6 group-hover:bg-cherry/20 transition-colors">
-                    <Icon className="w-8 h-8 text-cherry" />
-                  </div>
-                  <h3 className="text-heading-sm font-display font-bold text-foreground mb-3">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-body-sm text-muted-foreground">
-                    {achievement.description}
+        <div className="grid lg:grid-cols-2 gap-16">
+          
+          {/* Left Column */}
+          <div className="space-y-16">
+            
+            {/* Building More Than Software (Now with Flip Cards!) */}
+            <div className="ach-anim">
+              <div className="flex items-center gap-3 mb-8">
+                <Star className="w-6 h-6 text-accent" />
+                <h3 className="text-display-sm font-display text-foreground">Awards & Hackathons</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <FlipCard 
+                  title="2nd Place" 
+                  issuer="VISAI 2026 Innovation" 
+                  date="IoT Smart Solar" 
+                  imagePath="/images/visai.jpg" 
+                  icon={Medal}
+                />
+                <FlipCard 
+                  title="Special Jury Award" 
+                  issuer="AURA'25 Hackathon" 
+                  date="Problem-Solving & UX" 
+                  imagePath="/images/aura.png" 
+                  icon={Trophy}
+                />
+                <div className="sm:col-span-2">
+                  <FlipCard 
+                    title="Winner - Poster Design" 
+                    issuer="Cyber Crime Wing 2024" 
+                    date="Women's Safety Campaign" 
+                    imagePath="/images/cyber.png" 
+                    icon={Award}
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-center text-muted-foreground mt-4 italic">Hover over cards to view award photos</p>
+            </div>
+
+            {/* Leadership Beyond Code */}
+            <div className="ach-anim">
+              <div className="flex items-center gap-3 mb-8">
+                <Users className="w-6 h-6 text-primary" />
+                <h3 className="text-display-sm font-display text-foreground">Leadership Beyond Code</h3>
+              </div>
+              <div className="space-y-6">
+                <div className="bg-card p-6 rounded-3xl border border-border/50 shadow-soft">
+                  <h4 className="text-heading-sm font-medium text-foreground mb-1">Campus Ambassador</h4>
+                  <p className="text-primary text-sm font-medium mb-4">E-Cell IIT Bombay</p>
+                  <p className="text-body-sm text-muted-foreground leading-relaxed">
+                    Represented E-Cell IIT Bombay, promoting innovation and startup culture. Connected the campus with national-level entrepreneurial initiatives, strengthening networking and community-building skills.
                   </p>
                 </div>
-              </ScrollReveal>
-            );
-          })}
-        </div>
-{/* Journal Publications */}
-<div className="max-w-4xl mx-auto mb-24">
-  <ScrollReveal animation="slide-up">
-    <h3 className="text-heading-lg font-display font-bold text-foreground mb-8 text-center">
-      Journal Publications
-    </h3>
-  </ScrollReveal>
+                <div className="bg-card p-6 rounded-3xl border border-border/50 shadow-soft">
+                  <h4 className="text-heading-sm font-medium text-foreground mb-1">Chief Event Coordinator</h4>
+                  <p className="text-primary text-sm font-medium mb-4">Coding Club</p>
+                  <p className="text-body-sm text-muted-foreground leading-relaxed">
+                    Led technical events, hackathons, and workshops. Designed and implemented an AI-powered workflow to automatically deliver personalized opportunity alerts via email, improving student engagement.
+                  </p>
+                </div>
+              </div>
+            </div>
 
-  <div className="space-y-8">
-    <ScrollReveal animation="fade">
-      <div className="bg-card border border-border/50 rounded-2xl p-8 card-lift">
-        <h4 className="text-heading-sm font-display font-bold mb-2">
-          Real-Time Fault Detection in Power Systems using AI
-        </h4>
-        <p className="text-sm text-muted-foreground mb-4">
-          IJETS Journal • Volume XI, Issue IX • September 2024
-        </p>
-        <p className="text-body-sm text-muted-foreground">
-          An AI-driven approach for detecting faults in power systems in real time,
-          focusing on accuracy, reliability, and system resilience.
-        </p>
-      </div>
-    </ScrollReveal>
-
-    <ScrollReveal animation="fade" delay={0.1}>
-      <div className="bg-card border border-border/50 rounded-2xl p-8 card-lift">
-        <h4 className="text-heading-sm font-display font-bold mb-2">
-          Uplift — A Tailored Mental Wellness Platform for Enhancing Student Well-being
-        </h4>
-        <p className="text-sm text-muted-foreground mb-4">
-          IJETS Journal • Volume XI, Issue IX • September 2024
-        </p>
-        <p className="text-body-sm text-muted-foreground">
-          A personalized mental wellness platform designed to support student well-being
-          through technology, empathy, and thoughtful system design.
-        </p>
-      </div>
-    </ScrollReveal>
-  </div>
-</div>
-{/* Certifications & Learning */}
-<div className="max-w-5xl mx-auto mb-24">
-  <ScrollReveal animation="slide-up">
-    <h3 className="text-heading-lg font-display font-bold text-foreground mb-12 text-center">
-      Certifications & Learning
-    </h3>
-  </ScrollReveal>
-
-  <div className="grid md:grid-cols-2 gap-8">
-    <ScrollReveal animation="scale">
-      <div className="bg-card rounded-2xl p-8 border border-border/50 card-lift">
-        <h4 className="font-display font-bold mb-4">Industry Simulations</h4>
-        <ul className="space-y-2 text-muted-foreground text-body-sm">
-          <li>Solutions Architecture Job Simulation — Forage (AWS)</li>
-          <li>Software Engineering Job Simulation — Forage (Goldman Sachs)</li>
-        </ul>
-      </div>
-    </ScrollReveal>
-
-    <ScrollReveal animation="scale" delay={0.1}>
-      <div className="bg-card rounded-2xl p-8 border border-border/50 card-lift">
-        <h4 className="font-display font-bold mb-4">Technical Certifications</h4>
-        <ul className="space-y-2 text-muted-foreground text-body-sm">
-          <li>CCNA: Introduction to Networks — Cisco Networking Academy</li>
-          <li>
-            Privacy and Security in Social Media — NPTEL  
-            <span className="ml-2 text-cherry font-medium">(Top 1% Performer)</span>
-          </li>
-        </ul>
-      </div>
-    </ScrollReveal>
-
-    <ScrollReveal animation="scale" delay={0.2}>
-      <div className="bg-card rounded-2xl p-8 border border-border/50 card-lift">
-        <h4 className="font-display font-bold mb-4">AI & Prompt Engineering</h4>
-        <ul className="space-y-2 text-muted-foreground text-body-sm">
-          <li>Prompt Engineering for ChatGPT — Great Learning</li>
-          <li>Learning Any Topic Using ChatGPT & AI — Udemy</li>
-        </ul>
-      </div>
-    </ScrollReveal>
-
-    <ScrollReveal animation="scale" delay={0.3}>
-      <div className="bg-card rounded-2xl p-8 border border-border/50 card-lift">
-        <h4 className="font-display font-bold mb-4">Professional Development</h4>
-        <ul className="space-y-2 text-muted-foreground text-body-sm">
-          <li>Communication Skills for Success — Udemy</li>
-        </ul>
-      </div>
-    </ScrollReveal>
-  </div>
-</div>
-
-        {/* SkillRack profile */}
-        <ScrollReveal animation="fade" delay={0.3}>
-          <div className="max-w-xl mx-auto text-center">
-            <h3 className="text-heading-md font-display font-bold text-foreground mb-4">
-              Coding Practice & Continuous Learning
-            </h3>
-            <p className="text-body-md text-muted-foreground mb-6">
-              I regularly sharpen my problem-solving skills through structured coding platforms.
-            </p>
-            <a
-              href="https://www.skillrack.com/faces/resume.xhtml?id=525888&key=3bad68e7f2e9eb936a4380448ebee84fe9b52a36"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-foreground font-medium rounded-full transition-colors"
-            >
-              View SkillRack Profile
-              <ExternalLink className="w-4 h-4" />
-            </a>
           </div>
-        </ScrollReveal>
+
+          {/* Right Column */}
+          <div className="space-y-16">
+
+            {/* Research & Publications */}
+            <div className="ach-anim">
+              <div className="flex items-center gap-3 mb-8">
+                <FileText className="w-6 h-6 text-primary" />
+                <h3 className="text-display-sm font-display text-foreground">Research & Publications</h3>
+              </div>
+              <div className="space-y-6">
+                <a href="#" className="block p-6 rounded-3xl bg-secondary/50 border border-border hover:border-primary transition-colors interactive group">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="text-heading-sm font-medium text-foreground group-hover:text-primary transition-colors">BridgeAI: Multilingual AI Framework</h4>
+                    <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground mb-3">IJETS • Vol. XIII, Issue IV • Apr 2026</p>
+                  <p className="text-body-sm text-muted-foreground leading-relaxed">
+                    Explores how AI can bridge educational accessibility gaps by delivering personalized opportunity recommendations through multilingual support.
+                  </p>
+                </a>
+                <a href="#" className="block p-6 rounded-3xl bg-secondary/50 border border-border hover:border-primary transition-colors interactive group">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="text-heading-sm font-medium text-foreground group-hover:text-primary transition-colors">UpliftU: Tailored Mental Wellness</h4>
+                    <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground mb-3">IJETS • Vol. XI, Issue IX • Sep 2024</p>
+                  <p className="text-body-sm text-muted-foreground leading-relaxed">
+                    Leveraging technology to improve student mental health through personalized wellness support, empathy, and thoughtful system design.
+                  </p>
+                </a>
+              </div>
+            </div>
+
+            {/* Certifications (Flip Cards) */}
+            <div className="ach-anim">
+              <div className="flex items-center gap-3 mb-8">
+                <Award className="w-6 h-6 text-accent" />
+                <h3 className="text-display-sm font-display text-foreground">Certifications</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <FlipCard 
+                  title="AWS Certified AI Practitioner" 
+                  issuer="Amazon Web Services" 
+                  date="Valid until 2029" 
+                  imagePath="/images/aws-ai.jpg" 
+                  icon={Award}
+                />
+                <FlipCard 
+                  title="AI Fluency: Frameworks" 
+                  issuer="Anthropic" 
+                  date="Professional Certificate" 
+                  imagePath="/images/anthro.jpg" 
+                  icon={Star}
+                />
+                <FlipCard 
+                  title="Human Computer Interaction" 
+                  issuer="NPTEL - Elite + Gold" 
+                  date="96% Score" 
+                  imagePath="/images/NPTEL1.jpg" 
+                  icon={Medal}
+                />
+                <FlipCard 
+                  title="Privacy & Security" 
+                  issuer="NPTEL - Top 1%" 
+                  date="87% Score" 
+                  imagePath="/images/NPTEL2.jpg" 
+                  icon={Trophy}
+                />
+              </div>
+              <p className="text-xs text-center text-muted-foreground mt-4 italic">Hover over cards to view certificates</p>
+            </div>
+
+          </div>
+
+        </div>
       </div>
     </section>
   );
