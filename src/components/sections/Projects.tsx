@@ -51,7 +51,7 @@ const projectsData: ProjectData[] = [
     results: 'A responsive, personalized discovery platform that replaces hours of tab-switching with one tailored feed.',
     learnings: 'Sharpened my skills in generative AI integration, prompt engineering, and secure auth — but the real lesson was product thinking: the best AI feature removes a step, not adds intelligence for its own sake.',
     liveLink: 'https://bridge-ai-sac9.vercel.app/',
-    githubLink: 'https://github.com/es232',
+    githubLink: 'https://github.com/es232/bridge-ai',
     images: [],
   },
   {
@@ -68,7 +68,7 @@ const projectsData: ProjectData[] = [
     impact: 'By making progress visible, LearnBloom nudges users toward repeatable study routines instead of one-off cramming — directly improving consistency over time.',
     results: 'A distraction-free environment that increases focus time and reinforces daily learning habits through visible streaks.',
     learnings: 'Deepened my React state management, real-time sync, and dashboard design skills — and taught me that good analytics UX is about restraint as much as data.',
-    githubLink: 'https://github.com/es232',
+    githubLink: 'https://github.com/es232/LearnBloom',
     images: [],
   },
   {
@@ -119,7 +119,7 @@ const projectsData: ProjectData[] = [
     impact: 'Pipeline tuning improved processing speed by about 30%, cutting the time from raw spreadsheet to actionable chart.',
     results: 'A fast, code-free tool that turns static spreadsheets into interactive, explorable dashboards.',
     learnings: 'Strengthened my data visualization, file-processing, and API performance skills — and taught me to design for messy real-world input, not clean sample data.',
-    githubLink: 'https://github.com/es232',
+    githubLink: 'https://github.com/beniel-j/excel-analytics',
     images: [],
   },
 ];
