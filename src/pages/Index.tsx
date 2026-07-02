@@ -51,13 +51,6 @@ const Index: React.FC = () => {
     <main className="relative overflow-hidden">
       {/* Premium Global Tracking Cursor */}
       <CustomCursor />
-
-      {/* SEO Meta — Updated to Software Engineer */}
-      <title>Esakkiammal G — Software Engineer & AI Enthusiast</title>
-      <meta 
-        name="description" 
-        content="Design-aware software engineer with an AI-first mindset. Building calm, scalable web experiences with React, Node.js, and AI integrations." 
-      />
       
       <Navigation />
       
