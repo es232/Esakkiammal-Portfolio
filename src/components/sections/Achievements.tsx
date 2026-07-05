@@ -105,7 +105,7 @@ const Achievements: React.FC = () => {
                     title="Winner - Poster Design" 
                     issuer="Cyber Crime Wing 2024" 
                     date="Women's Safety Campaign" 
-                    imagePath="/images/cyber.png" 
+                    imagePath="/images/Cyber.jpeg" 
                     icon={Award}
                   />
                 </div>
@@ -197,14 +197,14 @@ const Achievements: React.FC = () => {
                   title="Human Computer Interaction" 
                   issuer="NPTEL - Elite + Gold" 
                   date="96% Score" 
-                  imagePath="/images/NPTEL1.jpg" 
+                  imagePath="/images/NPTEL2.jpg" 
                   icon={Medal}
                 />
                 <FlipCard 
                   title="Privacy & Security" 
                   issuer="NPTEL - Top 1%" 
                   date="87% Score" 
-                  imagePath="/images/NPTEL2.jpg" 
+                  imagePath="/images/nptel-1.jpg" 
                   icon={Trophy}
                 />
               </div>
